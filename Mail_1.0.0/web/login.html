@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>登录</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
+    <link rel="stylesheet" type="text/css" href="asserts/plugins/bootstrap/css/bootstrap.css">
+    <script src="asserts/plugins/JQuery/jquery-2.1.1.min.js"></script>
+    <script src="https://at.alicdn.com/t/font_2572187_fzxgixfnde.js"></script>
+    <script src="asserts/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/language/zh_CN.js"></script>
+    <style>
+         /*div{
+             border: black solid 1px;
+         }*/
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $("#button_login").click(function () {
+                $.ajax({
+                    url:"http://localhost:8080/Qf_Mall/UserServlet",
+                    async:true,
+                    type:"get",
+                    data:{
+                        action:"login",
+                        name:$("#name").val(),
+                        password:$("#password").val(),
+                        code:$("#code").val()
+                    },
+                    dataType:"json",
+                    success:function (msg) {
+                        if (msg.respMessage == "success") {
+                            location.href = "index.html?name="+msg.name;
+                        } else if (msg.respMessage == "error") {
+                            alert("用户名或密码不正确");
+                        } else if (msg.respMessage == "codeError") {
+                            alert("验证码错误");
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <svg class="icon" aria-hidden="true" id="Shopping_Cart">
+                <use xlink:href="#icon-denglu1"></use>
+            </svg>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>用户名:</label>
+                            <input type="text" class="form-control" name="name" id="name">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>密码:</label>
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>验证码:</label>
+                            <input type="text" class="form-control" id="code" name="code">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <img src="CheckServlet">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <input type="button" value="登录" id="button_login">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="register.html">还没有账号？注册一个</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

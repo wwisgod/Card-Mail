@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>产品信息编辑</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
+    <link rel="stylesheet" type="text/css" href="asserts/plugins/bootstrap/css/bootstrap.css">
+    <script src="asserts/plugins/JQuery/jquery-2.1.1.min.js"></script>
+    <script src="https://at.alicdn.com/t/font_2572187_fzxgixfnde.js"></script>
+    <script src="asserts/plugins/bootstrap/js/bootstrap.js"></script>
+    <!--<script type="text/javascript">
+        $(function () {
+            var id = location.href.split('=')[1];
+            console.log(id);
+            $.ajax({
+                url:"http://localhost:8080/Qf_Mall/CategoryServlet",
+                async:true,
+                type:"get",
+                data:{
+                    action:"getCategoryInfo",
+                    id:id
+                },
+                dataType:"json",
+                success:function (msg) {
+                    jQuery.each(msg.list,function (i,categoryInfo) {
+                        $("#id").attr("value",categoryInfo.id);
+                        $("#name").attr("value",categoryInfo.name);
+                    })
+                }
+            })
+
+            $("#button_update").click(function () {
+                $.ajax({
+                    url:"http://localhost:8080/Qf_Mall/CategoryServlet",
+                    async:true,
+                    type:"get",
+                    data:{
+                        action:"updateCategoryInfo",
+                        id:id,
+                        name:$("#name").val()
+                    },
+                    dataType:"json",
+                    success:function (msg) {
+                        if(msg.respMessage=="success"){
+                            alert("修改成功");
+                            location.href="admin_category.html";
+                        }else if (msg.respMessage=="error"){
+                            alert("后台数据库操作发生错误");
+                        }
+                    }
+                })
+            })
+        })
+    </script>-->
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <svg class="icon" aria-hidden="true" id="Shopping_Cart">
+                <use xlink:href="#icon-xiugai2"></use>
+            </svg>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品id:</label>
+                            <input type="text" class="form-control" name="id" id="id" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品名称:</label>
+                            <input type="text" class="form-control" name="name" id="name">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品描述:</label>
+                            <input type="text" class="form-control" name="subTitle" id="subTitle">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品价格:</label>
+                            <input type="text" class="form-control" name="price" id="price">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品库存:</label>
+                            <input type="text" class="form-control" name="stock" id="stock">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>分类id:</label>
+                            <select name="cid">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品图片:</label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <input type="button" value="修改" id="button_update">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

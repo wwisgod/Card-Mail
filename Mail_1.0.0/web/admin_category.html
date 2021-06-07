@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>后台分类管理</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
+    <link rel="stylesheet" type="text/css" href="asserts/plugins/bootstrap/css/bootstrap.css">
+    <script src="asserts/plugins/JQuery/jquery-2.1.1.min.js"></script>
+    <script src="asserts/plugins/bootstrap/js/bootstrap.js"></script>
+    <style>
+        /*div{
+            border: black solid 1px;
+        }*/
+
+    </style>
+    <script type="text/javascript">
+        /*删除点击事件*/
+        function btn(id) {
+            $.ajax({
+                url: "http://localhost:8080/Qf_Mall/CategoryServlet",
+                async: true,
+                type: "get",
+                data: {
+                    action: "deleteCategory",
+                    id: id
+                },
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.respMessage == "success") {
+                        alert("删除成功!");
+                        location.href = "admin_category.html";
+                    } else if (msg.respMessage == "error") {
+                        alert("后台数据库操作发生错误");
+                    }
+                }
+            })
+        }
+
+        $(function () {
+            $.ajax({
+                url: "http://localhost:8080/Qf_Mall/CategoryServlet",
+                async: true,
+                type: "get",
+                data: {
+                    action: "getCategoryList"
+                },
+                dataType: "json",
+                success: function (msg) {
+                    jQuery.each(msg.list, function (i, category) {
+                        var temp = "<tr>\n" +
+                            "            <td>" + category.id + "</td>\n" +
+                            "            <td>" + category.name + "</td>\n" +
+                            "            <td><a href=\"admin_product.html?id=" + category.id + "\"><span class=\"glyphicon glyphicon-list-alt\" aria-hidden=\"true\"></span> 管理所属产品</a></td>\n" +
+                            "            <td><a href=\"admin_categoey_edit.html?id=" + category.id + "\"><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> 修改分类名称</a></td>\n" +
+                            "            <td><a href=\"javascript:void (0)\" onclick=\"btn(" + category.id + ")\"><span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span> 删除分类</a></td>\n" +
+                            "       </tr>"
+                        $("#tbody").append(temp);
+                    })
+                }
+            })
+
+            $("#button_addCategory").click(function () {
+                $.ajax({
+                    url: "http://localhost:8080/Qf_Mall/CategoryServlet",
+                    async: true,
+                    type: "get",
+                    data: {
+                        action: "addCategory",
+                        name: $("#name").val()
+                    },
+                    dataType: "json",
+                    success: function (msg) {
+                        if (msg.respMessage == "success") {
+                            location.href = "admin_category.html";
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12"><h1>后台分类管理</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered" id="table">
+                <thead>
+                <tr class="bg-success">
+                    <th>id</th>
+                    <th>分类名称</th>
+                    <th>产品管理</th>
+                    <th>编辑</th>
+                    <th>删除</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <!--待添加数据-->
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <div class="row">
+                            <div class="col-md-3" >
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="add categoryName" id="name">
+                                    <span class="input-group-btn" id="button_addCategory">
+                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true">添加分类名称</span></button>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

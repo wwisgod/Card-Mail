@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>商城主页</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <link rel="stylesheet" type="text/css" href="asserts/plugins/bootstrap/css/bootstrap.css">
+    <script src="https://at.alicdn.com/t/font_2572187_fzxgixfnde.js"></script>
+    <script src="asserts/plugins/JQuery/jquery-2.1.1.min.js"></script>
+    <script src="asserts/plugins/bootstrap/js/bootstrap.js"></script>
+    <!--  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>-->
+    <style>
+       /* div {
+            border: black solid 1px;
+        }*/
+
+        #logo {
+            width: 50%;
+            height: 50%;
+        }
+       #logo-mid{
+           width: 400px;
+           height: 60px;
+       }
+
+        #navigator {
+            background: #403636;
+            color: white;
+            font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        #ShoppingCart_font {
+            width: 30px;
+            height: 30px;
+        }
+
+        #login_font {
+            width: 30px;
+            height: 30px;
+        }
+
+        #order_font {
+            width: 30px;
+            height: 30px;
+        }
+
+        #userInfo {
+            margin-top: 20px;
+        }
+
+        #rotation_chart img {
+            width: 1100px;
+            height: 450px;
+        }
+        #body img{
+            width: 100px;
+            height: 130px;
+        }
+        #body .productInfo{
+            margin-top:50px ;
+            margin-left: 60px;
+            float:left;
+        }
+        #body .productInfo .name-Info{
+            display: block;
+            text-align: center;
+        }
+        #productInfo-nav{
+            margin-top: 20px;
+            background-color: #9d9d9d;
+        }
+        #body{
+            border: black solid 1px;
+        }
+
+
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            //拿到登录成功后获得的用户名name；
+            var name = location.href.split('=')[1];
+            console.log(name);
+
+            var temp = "<div class=\"dropdown\">\n" +
+                "    <button id=\"dLabel\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                "欢迎," + name +
+                "      <span class=\"caret\"></span>\n" +
+                "    </button>\n" +
+                "    <ul class=\"dropdown-menu\" aria-labelledby=\"dLabel\">\n" +
+                "      <li><a href=\"javascript:void (0)\" id=\"rePassword\">修改密码</a></li>\n" +
+                "      <li><a href=\"javascript:void (0)\" id=\"logout\">注销</a></li>\n" +
+                "    </ul>\n" +
+                "  </div>"
+
+            if (!(name === undefined)) {
+                $("#loginInfo").empty().append(temp);
+                $("#rePassword").click(function () {
+                    location.href = "rePassword.html";
+                });
+                $("#logout").click(function () {
+                    $.ajax({
+                        url: "http://localhost:8080/Qf_Mall/UserServlet",
+                        async: true,
+                        type: "get",
+                        data: {
+                            action: "logout"
+                        },
+                        dataType: "json",
+                        success: function (msg) {
+                            if (msg.respMessage == "success") {
+                                location.href = "index.html";
+                            }
+                        },
+                        error: function () {
+                            alert("服务器发生错误");
+                        }
+                    })
+                })
+            }
+            $.ajax({
+                url: "http://localhost:8080/Qf_Mall/CategoryServlet",
+                async: true,
+                type: "get",
+                data: {
+                    action: "getCategoryList"
+                },
+                dataType: "json",
+                success: function (msg) {
+                    jQuery.each(msg.list, function (i, category) {
+                        console.log(category.name);
+                        var temp = "<li role=\"presentation\"><a href=\"categoryPage.html\">" + category.name + "</a></li>";
+                        $("#category ul").append(temp);
+                    })
+                }
+            })
+
+            $.ajax({
+                url: "http://localhost:8080/Qf_Mall/ProductServlet",
+                async: true,
+                type: "get",
+                data: {
+                    action: "getProductList"
+                },
+                dataType: "json",
+                success: function (msg) {
+                    jQuery.each(msg.list, function (i, product) {
+                        var temp = "<div class=\"productInfo\">\n" +
+                            "                    <img src=\"img/"+product.imgUrl +"\" >\n" +
+                            "                    <span class=\"name-Info\"><a href=\"#\">"+product.name +"</a></span>\n" +
+                            "                    <span class=\"price-Info\">￥"+product.price+"</span>\n" +
+                            "                </div>";
+                        $("#body").append(temp);
+                    })
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <!--头部信息-->
+    <div class="row" id="header">
+        <div class="col-md-2">
+            <img src="asserts/img/logo.jpeg" id="logo">
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <img src="asserts/img/top_banner.png" id="logo-mid">
+        </div>
+        <div class="col-md-5">
+            <div class="row" id="userInfo">
+                <div class="col-md-2"></div>
+                <div class="col-md-4" id="loginInfo">
+                    <svg class="icon" aria-hidden="true" id="login_font">
+                        <use xlink:href="#icon-weidenglutouxiang"></use>
+                    </svg>
+                    <a href="login.html" id="login_a">登录</a>
+                </div>
+                <div class="col-md-4">
+                    <svg class="icon" aria-hidden="true" id="order_font">
+                        <use xlink:href="#icon-01_shangchengdingdan"></use>
+                    </svg>
+                    <a href="#" id="order_a">我的订单</a>
+                </div>
+                <div class="col-md-2">
+                    <svg class="icon" aria-hidden="true" id="ShoppingCart_font">
+                        <use xlink:href="#icon-gouwuchekong"></use>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--导航栏-->
+    <div class="row" id="navigator">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">首页</a></li>
+                <li role="presentation"><a href="#">关于</a></li>
+                <li role="presentation"><a href="#">常见问题</a></li>
+                <li role="presentation"><a href="#">售后</a></li>
+                <li role="presentation"><a href="#">联系我们</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--分类栏-->
+    <div class="row">
+        <div class="col-md-3" id="category">
+            <ul class="nav nav-pills nav-stacked">
+                <!--待添加-->
+            </ul>
+        </div>
+        <!--轮播图-->
+        <div class="col-md-9" id="rotation_chart">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <img src="asserts/img/LostArt6_cards.png" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="asserts/img/rotation1.jpg" alt="...">
+                                <div class="carousel-caption">
+                                    <h3>BIUE-EYES WHITE DRAGON</h3>
+                                    <p>以高攻击力著称的传说之龙。任何对手都能粉碎，其破坏力不可估量</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="asserts/img/rotation5.jpg" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="asserts/img/rotation3.jpg" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="asserts/img/rotation2.jpg" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="asserts/img/rotation4.jpg" alt="...">
+                            </div>
+
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button"
+                           data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button"
+                           data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--显示所有产品栏-->
+            <div class="row" id="productInfo-nav"><span ><h3>所有卡牌：</h3></span></div>
+            <div class="row" id="body">
+                <!--待添加部分-->
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

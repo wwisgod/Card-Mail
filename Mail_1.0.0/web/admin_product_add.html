@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>添加产品</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
+    <link rel="stylesheet" type="text/css" href="asserts/plugins/bootstrap/css/bootstrap.css">
+    <script src="asserts/plugins/JQuery/jquery-2.1.1.min.js"></script>
+    <script src="https://at.alicdn.com/t/font_2572187_fzxgixfnde.js"></script>
+    <script src="asserts/plugins/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            console.log(location.href);
+            var cid = location.href.split('=')[1];
+            console.log(cid);
+            $("#button_add").click(function () {
+                var formData = new FormData;
+                formData.append("name", $("#name").val());
+                formData.append("subTitle", $("#subTitle").val());
+                formData.append("price", $("#price").val());
+                formData.append("stock", $("#stock").val());
+                formData.append("cid", cid);
+                formData.append("file", $("#fileContent")[0].files[0]);
+                $.ajax({
+                    url: "http://localhost:8080/Qf_Mall/ProductServlet",
+                    async: true,
+                    type: "post",
+                    headers: {action: "addProduct"},
+                    data: formData,
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    success: function (msg) {
+                        if (msg.respMessage == 'success') {
+                            alert("添加成功");
+                            location.href = "admin_product.html?cid="+cid;
+                        }
+                    }
+                })
+            })
+
+        })
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <svg class="icon" aria-hidden="true" id="Shopping_Cart">
+                <use xlink:href="#icon-xiugai2"></use>
+            </svg>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>产品名称:</label>
+                            <input type="text" class="form-control" name="name" id="name" >
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>描述:</label>
+                            <input type="text" class="form-control" name="subTitle" id="subTitle">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>价格:</label>
+                            <input type="text" class="form-control" name="price" id="price">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>库存:</label>
+                            <input type="text" class="form-control" name="stock" id="stock">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>图片:</label>
+                            <input type="file" name="fileContent" id="fileContent">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <input type="button" value="添加" id="button_add">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
